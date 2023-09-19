@@ -178,20 +178,30 @@ function defineMachine() {
       coordinate: 0,
       table: true,
       axis: [1, 0, 0],
-      range: [-120, 120],
-      preference: 1,
+      range: [0, 360],
+      preference: 0,
+      cyclic: true,
+      tcp: useTCP,
+    });
+    var bAxis = createAxis({
+      coordinate: 1,
+      table: true,
+      axis: [0, 1, 0],
+      range: [0, 360],
+      preference: 0,
+      cyclic: true,
       tcp: useTCP,
     });
     var cAxis = createAxis({
       coordinate: 2,
       table: true,
       axis: [0, 0, 1],
-      range: [-360, 360],
+      range: [0, 360],
       preference: 0,
       cyclic: true,
       tcp: useTCP,
     });
-    machineConfiguration = new MachineConfiguration(aAxis, cAxis);
+    machineConfiguration = new MachineConfiguration(aAxis, bAxis, cAxis);
 
     setMachineConfiguration(machineConfiguration);
     if (receivedMachineConfiguration) {
@@ -333,8 +343,9 @@ function writeScript() {
   writeBlock("type: 'line',");
   writeBlock("data: {");
   writeBlock("labels: [" + countStr.substring(0, countStr.length - 1) + "],");
-  writeBlock("datasets: [{");
+  writeBlock("datasets: [");
   if (hasC) {
+    writeBlock("{");
     writeBlock("label: 'C Axis',");
     writeBlock("data:[" + myCaxisArr.substring(1, myCaxisArr.length) + "],");
     writeBlock("borderWidth: 1");
