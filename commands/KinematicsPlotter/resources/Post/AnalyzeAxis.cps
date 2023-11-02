@@ -310,19 +310,23 @@ function forceWorkPlane() {
 }
 
 function cancelWorkPlane(force) {
-  if (typeof gRotationModal != "undefined") {
-    if (force) {
-      gRotationModal.reset();
-    }
-    writeBlock(gRotationModal.format(69)); // cancel frame
-  }
   forceWorkPlane();
 }
 
+function checkString(str) {
+  var arr = str.split(",").filter(function (value) {
+    return value.trim() !== ""; // Remove empty strings or strings that are just whitespace
+  });
+  var found = arr.some(function (value) {
+    return value.trim() !== "0.";
+  });
+  return found;
+}
+
 function writeScript() {
-  var hasA = myAaxisArr[1] != 0;
-  var hasB = myBaxisArr[1] != 0;
-  var hasC = myCaxisArr[1] != 0;
+  var hasA = checkString(myAaxisArr);
+  var hasB = checkString(myBaxisArr);
+  var hasC = checkString(myCaxisArr);
   var animation = "animation: true";
   if (
     myAaxisArr.length > 1000 ||
