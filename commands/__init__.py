@@ -5,12 +5,16 @@
 # You need to use aliases (import "entry" as "my_module") assuming you have the default module named "entry".
 from .KinematicsPlotter import entry as KinematicsPlotter
 from .opRename import entry as opRename
+from .ncPrograms import create, setDefaults
+# from .ropeThread import entry as ropeThread
 
 # TODO add your imported modules to this list.
 # Fusion will automatically call the start() and stop() functions.
 commands = [
     KinematicsPlotter,
     opRename,
+    create, setDefaults,
+    # ropeThread
 ]
 
 

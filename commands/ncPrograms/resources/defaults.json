@@ -1,0 +1,20 @@
+{
+    "userSettings": {
+        "displayName": "Dosn't work yet",
+        "name": "documentName",
+        "filename": "nc_program_setup_name",
+        "comment": "'Setup' +' '+ nc_program_setup_name+ ' ' + 'For' +' ' + nc_program_name",
+        "createFolder": true,
+        "outputFolder": "nc_program_setup_name",
+        "filePath": "D:/Downloads"
+    },
+    "defaults": {
+        "displayName": "nc_program_setup_name",
+        "name": "documentName",
+        "filename": "documentName + '-' + nc_program_setup_name",
+        "comment": "nc_program_setup_name + '-' + nc_program_name",
+        "createFolder": true,
+        "outputFolder": "nc_program_setup_name",
+        "filePath": "D:/Downloads"
+    }
+}

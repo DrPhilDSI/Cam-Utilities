@@ -22,11 +22,15 @@ cam_workspace = 'CAMEnvironment'
 
 # Tabs
 
-cam_tab_id = 'CAM UTILITIES_cam_tab'
+cam_tab_id = 'CAM_UTILITIES_cam_tab'
 cam_tab_name = 'CAM UTILITIES'
 
 camUtils_panel_name = 'CAM UTILITIES'
 camUtils_panel_id = f'{ADDIN_NAME}_camUtils_panel'
 camUtils_panel_after = camUtils_panel_id
+
+postUtils_panel_name = 'POST UTILITIES'
+postUtils_panel_id = f'{ADDIN_NAME}_postUtils_panel'
+postUtils_panel_after = postUtils_panel_id
 
 
