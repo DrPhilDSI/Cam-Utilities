@@ -12,9 +12,9 @@ app = adsk.core.Application.get()
 ui = app.userInterface
 
 # TODO *** Specify the command identity information. ***
-CMD_ID = f'{config.COMPANY_NAME}_{config.ADDIN_NAME}_KinematicsPlotter'
-CMD_NAME = 'Kinematics Plotter'
-CMD_Description = 'Plots rotary axis positions for a given toolpath'
+CMD_ID = f'{config.COMPANY_NAME}_{config.ADDIN_NAME}_Template_Command'
+CMD_NAME = 'Template Command'
+CMD_Description = ''
 
 # Specify that the command will be promoted to the panel.
 IS_PROMOTED = True
@@ -27,9 +27,9 @@ WORKSPACE_ID = config.cam_workspace
 TAB_ID = config.cam_tab_id
 TAB_NAME = config.cam_tab_name
 
-PANEL_ID = config.camUtils_panel_id
-PANEL_NAME = config.camUtils_panel_name
-PANEL_AFTER = config.camUtils_panel_after
+PANEL_ID = config.cam_panel_id
+PANEL_NAME = config.cam_panel_name
+PANEL_AFTER = config.cam_panel_after
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', '')
@@ -37,9 +37,6 @@ ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resource
 # Local list of event handlers used to maintain a reference so
 # they are not released and garbage collected.
 local_handlers = []
-index = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', 'html', 'index.html')
-index = index.replace('\\', '/')
-
 
 # Executed when add-in is run.
 def start():
@@ -110,16 +107,10 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     
     app = adsk.core.Application.get()
     ui = app.userInterface
-    
     inputs = args.command.commandInputs
-
     camWS = ui.workspaces.itemById('CAMEnvironment')
     camWS.activate()
-    selections: adsk.core.Selections = ui.activeSelections
-    selections.clear()
-    selectedToolpath = inputs.addSelectionInput('selectedToolpath', 'Select Toolpath', 'Select a toolpath to analyze')
-    browserInput = inputs.addBrowserCommandInput(f'{CMD_ID}_browser', 'Analyze Axis', index, 400)
-    browserInput.isFullWidth = True
+
 
                 
 # This event handler is called when the user changes anything in the command dialog
@@ -133,48 +124,7 @@ def command_input_changed(args: adsk.core.InputChangedEventArgs):
     ui = app.userInterface
     product = app.activeProduct
     cam = adsk.cam.CAM.cast(product)
-    units = adsk.cam.PostOutputUnitOptions.DocumentUnitsOutput
-    selectedToolpath: adsk.core.SelectionCommandInput = inputs.itemById('selectedToolpath')
-    browserInput: adsk.core.BrowserCommandInput = inputs.itemById(f'{CMD_ID}_browser')
-    outputFolder = cam.temporaryFolder
-    postProcessor = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', 'Post', 'AnalyzeAxis.cps')
-    programName = 'Analyze Axis'
-    
-    if selectedToolpath.selectionCount <= 0:
-        browserInput.htmlFileURL = index
-        return 
 
-    operation = selectedToolpath.selection(0).entity
-    if operation.classType() != 'adsk::cam::Operation':
-        ui.messageBox(f'{operation.objectType} is not a toolpath')
-        selectedToolpath.clearSelection()
-        return
-    
-    if not operation.isToolpathValid:
-        ui.messageBox(f'Operation: {operation.name} is out of date.')
-        selectedToolpath.clearSelection()
-        return
-
-    futil.log('********** Selected Toolpath **********')
-    futil.log(f'Name: {operation.name}')
-    futil.log('***************************************')
-    programName = operation.name
-    postInput = adsk.cam.PostProcessInput.create(programName, postProcessor, outputFolder, units)
-    postInput.isOpenInEditor = False
-    try: 
-        cam.postProcess(operation,postInput)
-    except Exception as e:
-        futil.log(f'Post processing failed  {e}')
-        return
-    # cam.postProcess(operation,postInput)
-    futil.log(f'Post processed {programName}')
-
-    # Create browser
-    toolpath = os.path.join(outputFolder, programName + '.html')
-    toolpath = toolpath.replace('\\', '/')
-    futil.log(f"Opening {toolpath}")
-    
-    browserInput.htmlFileURL = toolpath
             
 def command_execute(args: adsk.core.CommandEventArgs):
     # General logging for debug.
@@ -184,8 +134,6 @@ def command_execute(args: adsk.core.CommandEventArgs):
     # Get a reference to your command's inputs.
 
     
-
-
 # This event handler is called when the command terminates.
 def command_destroy(args: adsk.core.CommandEventArgs):
     # General logging for debug.

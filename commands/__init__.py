@@ -3,18 +3,14 @@
 # TODO Import the modules corresponding to the commands you created.
 # If you want to add an additional command, duplicate one of the existing directories and import it here.
 # You need to use aliases (import "entry" as "my_module") assuming you have the default module named "entry".
-from .KinematicsPlotter import entry as KinematicsPlotter
-from .opRename import entry as opRename
-from .ncPrograms import create, setDefaults
+from .Template import entry as Template
+
 # from .ropeThread import entry as ropeThread
 
 # TODO add your imported modules to this list.
 # Fusion will automatically call the start() and stop() functions.
 commands = [
-    KinematicsPlotter,
-    opRename,
-    create, setDefaults,
-    # ropeThread
+    Template,
 ]
 
 
